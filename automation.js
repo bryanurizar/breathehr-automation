@@ -1,7 +1,9 @@
 require('dotenv').config()
 const puppeteer = require('puppeteer');
 const moment = require('moment-business-days');
-const XLSX = require('xlsx');
+const leave = require('./leave');
+
+console.log(leave.annualLeave);
 
 const url = 'https://hr.breathehr.com/employees/524792/time_logs/new?identifier=healthcodeltd&log_return_to=dashboard';
 
@@ -11,33 +13,20 @@ moment.updateLocale('us', {
     workingWeekdays: [1, 2, 3, 4, 5]
 });
 
-const startDate = moment('01-01-2020', 'DD-MM-YYYY');
-const endDate = moment('31-12-2020', 'DD-MM-YYYY');
-const annualLeave = [];
-
-const workbook = XLSX.readFile('Leave.xlsx');
-const first_sheet_name = workbook.SheetNames[0];
-
-for (let i = 1; i < 100; i++) {
-    const address_of_cell = `A${i}`;
-    const worksheet = workbook.Sheets[first_sheet_name];
-    const desired_cell = worksheet[address_of_cell];
-
-    if (desired_cell != undefined) {
-        const desired_value = desired_cell.v;
-        annualLeave.push(moment(desired_value, 'DD/MM/YYYY'));
-    }
-}
+const startDate = moment('01/01/2020', 'DD/MM/YYYY');
+const endDate = moment('31/12/2020', 'DD/MM/YYYY');
 
 for (let day = startDate; day <= endDate; day.add(1, 'd')) {
-    if (day.isHoliday() || annualLeave.includes(day)) {
-        logDay(day, "Leave", "LEAVE (inc Bank Holidays)");
+    if (day.isHoliday(day) || leave.annualLeave.includes(day.format('DD/MM/YYYY'))) {
+        console.log("Bank Holiday/Leave Day")
+        console.log(day.format('DD/MM/YYYY'));
+        // logDay(day, "Leave", "LEAVE (inc Bank Holidays)");
     } else {
-        logDay(day, "Work", "General Support");
+        console.log("Regular working day")
+        console.log(day.format('DD/MM/YYYY'));
+        // logDay(day, "Work", "General Support");
     }
 }
-
-await browser.close();
 
 function logDay(date, description, type) {
     (async () => {
