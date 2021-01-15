@@ -33,7 +33,7 @@ for (let day = startDate; day <= endDate; day.add(1, 'd')) {
     if (day.isHoliday() || annualLeave.includes(day)) {
         logDay(day, "Leave", "LEAVE (inc Bank Holidays)");
     } else {
-        console.log("Regular day: " + day);
+        logDay(day, "Work", "General Support");
     }
 }
 
