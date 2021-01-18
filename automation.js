@@ -11,8 +11,10 @@ moment.updateLocale('us', {
     workingWeekdays: [1, 2, 3, 4, 5]
 });
 
-const startDate = moment('01/01/2020', 'DD/MM/YYYY');
-const endDate = moment('31/12/2020', 'DD/MM/YYYY');
+const ukDateFormat = 'DD/MM/YYYY';
+
+const startDate = moment('01/01/2020', ukDateFormat);
+const endDate = moment('31/12/2020', ukDateFormat);
 
 (async () => {
     const browser = await puppeteer.launch({ headless: false });
@@ -26,15 +28,15 @@ const endDate = moment('31/12/2020', 'DD/MM/YYYY');
     let day = startDate;
 
     for (day; day <= endDate; day.add(1, 'd')) {
-        const isBankHolidayOrLeaveDay = day.isHoliday() || leave.annualLeave.includes(day.format('DD/MM/YYYY'));
+        const isBankHolidayOrLeaveDay = day.isHoliday() || leave.annualLeave.includes(day.format(ukDateFormat));
         const isBusinessDay = day.isBusinessDay();
 
         if (isBankHolidayOrLeaveDay) {
             console.log("holiday");
-            await logDate(day.format("DD/MM/YYYY"), "Leave", "LEAVE (inc Bank Holidays)", page);
+            await logDate(day.format(ukDateFormat), "Leave", "LEAVE (inc Bank Holidays)", page);
         } else if (isBusinessDay) {
             console.log("business day");
-            await logDate(day.format("DD/MM/YYYY"), "Work", "General Support", page);
+            await logDate(day.format(ukDateFormat), "Work", "General Support", page);
         }
     }
     await browser.close();
