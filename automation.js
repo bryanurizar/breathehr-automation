@@ -23,15 +23,21 @@ const endDate = moment('31/12/2020', 'DD/MM/YYYY');
     await page.keyboard.press('Enter');
     await page.waitForNavigation({ waitUntil: ['networkidle2'] });
 
-    for (let day = startDate; day <= endDate; day.add(1, 'd')) {
-        if (day.isHoliday() || leave.annualLeave.includes(day.format('DD/MM/YYYY'))) {
-            console.log("Leave/Bank Holiday: " + day.format('DD/MM/YYYY'));
+    let day = startDate;
+
+    for (day; day <= endDate; day.add(1, 'd')) {
+        const isHolidayOrLeaveDay = day.isHoliday() || leave.annualLeave.includes(day.format('DD/MM/YYYY'));
+        const isBusinessDay = day.isBusinessDay();
+
+        if (isHolidayOrLeaveDay) {
+            console.log("holiday");
             await logDate(day.format("DD/MM/YYYY"), "Leave", "LEAVE (inc Bank Holidays)", page);
-        } else if (day.isBusinessDay()) {
-            console.log("Workding day: " + day.format('DD/MM/YYYY'));
+        } else if (isBusinessDay) {
+            console.log("business day");
             await logDate(day.format("DD/MM/YYYY"), "Work", "General Support", page);
         }
     }
+    await browser.close();
 })();
 
 async function logDate(day, description, type, page) {
