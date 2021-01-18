@@ -5,13 +5,13 @@ const leave = require('./leave');
 
 const url = process.env.URL;
 
+const ukDateFormat = 'DD/MM/YYYY';
+
 moment.updateLocale('us', {
     holidays: ["01/01/2020", "10/04/2020", "13/04/2020", "08/05/2020", "25/05/2020", "31/08/2020", "25/12/2020", "28/12/2020"],
-    holidayFormat: 'DD/MM/YYYY',
+    holidayFormat: ukDateFormat,
     workingWeekdays: [1, 2, 3, 4, 5]
 });
-
-const ukDateFormat = 'DD/MM/YYYY';
 
 const startDate = moment('01/01/2020', ukDateFormat);
 const endDate = moment('31/12/2020', ukDateFormat);
