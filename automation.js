@@ -2,13 +2,14 @@ require('dotenv').config()
 const puppeteer = require('puppeteer');
 const moment = require('moment-business-days');
 const leave = require('./leave');
+const holidays = require('./bankHolidays');
 
 const url = process.env.URL;
 
 const ukDateFormat = 'DD/MM/YYYY';
 
 moment.updateLocale('us', {
-    holidays: ["01/01/2020", "10/04/2020", "13/04/2020", "08/05/2020", "25/05/2020", "31/08/2020", "25/12/2020", "28/12/2020"],
+    holidays: holidays.bankHolidays,
     holidayFormat: ukDateFormat,
     workingWeekdays: [1, 2, 3, 4, 5]
 });
@@ -33,10 +34,10 @@ const endDate = moment('31/12/2020', ukDateFormat);
 
         if (isBankHolidayOrLeaveDay) {
             console.log("holiday");
-            await logDate(day.format(ukDateFormat), "Leave", "LEAVE (inc Bank Holidays)", page);
+            // await logDate(day.format(ukDateFormat), "Leave", "LEAVE (inc Bank Holidays)", page);
         } else if (isBusinessDay) {
             console.log("business day");
-            await logDate(day.format(ukDateFormat), "Work", "General Support", page);
+            // await logDate(day.format(ukDateFormat), "Work", "General Support", page);
         }
     }
     await browser.close();
