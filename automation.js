@@ -26,10 +26,10 @@ const endDate = moment('31/12/2020', 'DD/MM/YYYY');
     let day = startDate;
 
     for (day; day <= endDate; day.add(1, 'd')) {
-        const isHolidayOrLeaveDay = day.isHoliday() || leave.annualLeave.includes(day.format('DD/MM/YYYY'));
+        const isBankHolidayOrLeaveDay = day.isHoliday() || leave.annualLeave.includes(day.format('DD/MM/YYYY'));
         const isBusinessDay = day.isBusinessDay();
 
-        if (isHolidayOrLeaveDay) {
+        if (isBankHolidayOrLeaveDay) {
             console.log("holiday");
             await logDate(day.format("DD/MM/YYYY"), "Leave", "LEAVE (inc Bank Holidays)", page);
         } else if (isBusinessDay) {
