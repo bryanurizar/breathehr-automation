@@ -34,10 +34,10 @@ const endDate = moment('31/12/2020', ukDateFormat);
 
         if (isBankHolidayOrLeaveDay) {
             console.log("holiday");
-            // await logDate(day.format(ukDateFormat), "Leave", "LEAVE (inc Bank Holidays)", page);
+            await logDate(day.format(ukDateFormat), "Leave", "LEAVE (inc Bank Holidays)", page);
         } else if (isBusinessDay) {
             console.log("business day");
-            // await logDate(day.format(ukDateFormat), "Work", "General Support", page);
+            await logDate(day.format(ukDateFormat), "Work", "General Support", page);
         }
     }
     await browser.close();
